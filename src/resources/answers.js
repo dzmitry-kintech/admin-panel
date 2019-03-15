@@ -3,23 +3,22 @@ import {Datagrid, EditButton, Edit, Create, Filter, List, Responsive, SimpleForm
 
 const AnswerFilter = props => (
     <Filter {...props}>
-        <TextInput label="Search user by id" source="id" alwaysOn/>
-        <TextInput label="Search user by email" source="email" alwaysOn/>
+        <TextInput label="Filter by Id" source="id" alwaysOn/>
+        <TextInput label="Filter by Question Id" source="questionId" alwaysOn/>
     </Filter>
 );
 
-export const AnswerList = ({...props }) => (
+export const AnswerList = props => (
     <List {...props} filters={<AnswerFilter/>} sort={{ field: "id", order: "ASC" }}>
         <Responsive
             small={<SimpleList primaryText={record => record.email} secondaryText={record => `id: ${record.id} | deleted: ${record.deleted}`}/>}
             medium={
                 <Datagrid>
-                    <TextField source="id" label="Id"/>
-                    <TextField source="userId" label="User Id"/>
-                    <TextField source="quizId" label="Quiz Id"/>
-                    <TextField source="questionId" label="Question Id"/>
-                    <TextField source="answerIndex" label="Answer Index"/>
-                    <TextField source="scores" label="Scores"/>
+                    <TextField label="Id" source="id"/>
+                    <TextField label="Answer" source="answer"/>
+                    <TextField label="Scores" source="scores"/>
+                    <TextField label="Question Id" source="questionId"/>
+                    <TextField label="Question Name" source="questionName"/>
                     <EditButton/>
                 </Datagrid>
             }
@@ -27,28 +26,39 @@ export const AnswerList = ({...props }) => (
     </List>
 );
 
-export const AnswerCreate = ({...props }) => (
+const ERROR_FIELD_IS_REQUIRED = 'The field is required';
+
+const validateForm = values => {
+    const errors = {};
+    if (!values.questionId) errors.questionId = [ERROR_FIELD_IS_REQUIRED];
+    if (!values.answer) errors.answer = [ERROR_FIELD_IS_REQUIRED];
+    if (!values.scores) errors.scores = [ERROR_FIELD_IS_REQUIRED];
+
+    //TODO: Check format of an questionId field (must be as integer number).
+    //TODO: Check format of an answer field (must be as integer number).
+    //TODO: Check format of a scores field (must be as integer number).
+
+    return errors;
+};
+
+export const AnswerCreate = props => (
     <Create {...props} filters={<AnswerFilter/>} sort={{ field: "id", order: "ASC" }}>
-        <SimpleForm>
-            <DisabledInput source="id" label="Id"/>
-            <NumberInput source="userId" label="User Id"/>
-            <NumberInput source="quizId" label="Quiz Id"/>
-            <TextField source="questionId" label="Question Id"/>
-            <TextField source="answerIndex" label="Answer Index"/>
-            <NumberInput source="scores" label="Scores"/>
+        <SimpleForm validate={validateForm}>
+            <DisabledInput label="Id" source="id"/>
+            <TextInput label="Question Id" source="questionId"/>
+            <TextInput label="Answer" source="answer"/>
+            <TextInput label="Scores" source="scores"/>
         </SimpleForm>
     </Create>
 );
 
-export const AnswerEdit = ({...props }) => (
+export const AnswerEdit = props => (
     <Edit {...props} filters={<AnswerFilter/>} sort={{ field: "id", order: "ASC" }}>
-        <SimpleForm>
-            <DisabledInput source="id" label="Id"/>
-            <NumberInput source="userId" label="User Id"/>
-            <NumberInput source="quizId" label="Quiz Id"/>
-            <TextField source="questionId" label="Question Id"/>
-            <TextField source="answerIndex" label="Answer Index"/>
-            <NumberInput source="scores" label="Scores"/>
+        <SimpleForm validate={validateForm}>
+            <DisabledInput label="Id" source="id"/>
+            <TextInput label="Question Id" source="questionId"/>
+            <TextInput label="Answer" source="answer"/>
+            <TextInput label="Scores" source="scores"/>
         </SimpleForm>
     </Edit>
 );
