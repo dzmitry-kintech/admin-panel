@@ -31,7 +31,7 @@ export const AdminPanel = () =>
 (
     <Admin title="Admin Panel" dataProvider={delayedDataProvider} authProvider={authProvider} i18nProvider={i18nProvider}>
     {
-        (auth) => [
+        () => [
             <Resource key="users" name="users" list={UserList} create={UserCreate} edit={UserEdit} icon={UserIcon}/>,
             <Resource key="subscriptions" name="subscriptions" list={SubscriptionList} create={SubscriptionCreate} edit={SubscriptionEdit} icon={SubscriptionIcon}/>,
             <Resource key="topics" name="topics" list={TopicList} create={TopicCreate} edit={TopicEdit} icon={TopicIcon}/>,
